@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, SafeAreaView, TouchableOpacity, Animated, Easing, StatusBar, Platform } from 'react-native';
+import { ScrollView, SafeAreaView, TouchableOpacity, Animated, Easing, StatusBar } from 'react-native';
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { reduxConstants as rc } from '../constants'
@@ -18,7 +18,6 @@ class HomeScreen extends React.Component {
     }
     componentDidMount = () => {
         StatusBar.setBarStyle("dark-content", true)
-        if (Platform.OS === "android") StatusBar.setBarStyle("light-content", true)
     }
     componentDidUpdate = () => {
         console.log('componentDidUpdatte')
@@ -49,7 +48,6 @@ class HomeScreen extends React.Component {
             }).start()
             
             StatusBar.setBarStyle("dark-content", true)
-            if (Platform.OS === "android") StatusBar.setBarStyle("light-content", true)
         }
     }
     render() {
@@ -98,33 +96,19 @@ class HomeScreen extends React.Component {
                             style={{paddingBottom: 30}}
                             showsHorizontalScrollIndicator={false}
                             >
-                            <CardsContainer>
-
-                                {cards.map((card, index) => (
-                                    <TouchableOpacity
-                                    key={index}
-                                    onPress={() => {
-                                        this.props.navigation.push("Section", {
-                                            section: card
-                                        })
-                                    }}
-                                    >
-                                        <Card
-                                        
-                                        title={card.title}
-                                        image={card.image}
-                                        subtitle={card.subtitle}
-                                        caption={card.caption}
-                                        logo={card.logo}
-                                        />
-                                    </TouchableOpacity>
-                                    ))
-                                }
-                            </CardsContainer>
-                            
+                            {cards.map((card, index) => (
+                                <Card
+                                key={index}
+                                title={card.title}
+                                image={card.image}
+                                subtitle={card.subtitle}
+                                caption={card.caption}
+                                logo={card.logo}
+                                />
+                                ))}
                         </ScrollView>
                         <Subtitle>Popular Courses</Subtitle>
-                        <CoursesContainer>
+                        <CourseWrapper>
                             {
                                 courses.map((course, index) => (
                                     <Course 
@@ -139,7 +123,7 @@ class HomeScreen extends React.Component {
                                     />
                                     ))
                             }
-                        </CoursesContainer>
+                        </CourseWrapper>
                         </ScrollView>
                     </SafeAreaView>
                 </AnimatedContainer>
@@ -156,8 +140,7 @@ const
     Containter = styled.View`
         flex: 1;
         background-color: #f0f3f5;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
+        border-radius: 10px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -185,14 +168,10 @@ const
         margin-top: 20px;
         text-transform: uppercase;
     `,
-    CardsContainer = styled.View`
-        flex-direction: row;
-        padding-left: 10px;
-    `,
-    CoursesContainer = styled.View`
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding-left: 10px;
+    CourseWrapper = styled.View`
+        /* flex-direction: column;
+        justify-content: center;
+        align-items: center; */
     `
 const AnimatedContainer = Animated.createAnimatedComponent(Containter)
 

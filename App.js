@@ -1,12 +1,15 @@
-import React from 'react'
+import 'react-native-gesture-handler'
+import * as React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import HomeScreen from './screens/HomeScreen'
+import { NavigationContainer } from '@react-navigation/native'
+import { TabNavigator} from './navigator/TabNavigator'
 import { reduxConstants as rc } from './constants'
 
 const
     initialState = {
-        action: "closeMenu"
+        action: "closeMenu",
+        name: "User"
     },
     reducer = (state=initialState, action) => {
         switch(action.type) {
@@ -20,6 +23,11 @@ const
                     ...state,
                     action: "openMenu"
                 }
+            case rc.user.UPDATE_NAME:
+                return {
+                    ...state,
+                    name: action.name
+                }
             default:
                 return state
         }
@@ -28,6 +36,9 @@ const
 
 export default App = () => (
   <Provider store={store}>
-    <HomeScreen />
+      <NavigationContainer>
+        
+        <TabNavigator />
+      </NavigationContainer>
   </Provider>
 )

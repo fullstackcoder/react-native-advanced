@@ -5,6 +5,14 @@ import { Animated, TouchableOpacity, TouchableHighlightBase } from 'react-native
 import { Ionicons } from '@expo/vector-icons'
 import { height, reduxConstants as rc } from '../constants'
 import { MenuItem } from './MenuItem'
+import CloseButton from './CloseButton'
+import { width } from '../constants'
+
+var cardWidth = width
+
+if (cardWidth > 500) {
+    cardWidth = 500
+}
 
 class Menu extends React.Component {
     state = {
@@ -19,7 +27,6 @@ class Menu extends React.Component {
         return null
     }
     componentDidUpdate = (prevProps, prevState, snapshot) => {
-        console.log('snapshot', snapshot)
         if (snapshot) {
             this.toggleMenu()
         }
@@ -29,8 +36,7 @@ class Menu extends React.Component {
     }
     toggleMenu = () => {
         const { action } = this.props
-        console.log('toggleMenu!', action)
-
+    
         if (action === "openMenu") {
             Animated.spring(this.state.top, {
                 toValue: 54
@@ -61,13 +67,7 @@ class Menu extends React.Component {
                         zIndex: 1
                     }}
                     >
-                    <CloseView>
-                        <Ionicons
-                            name="ios-close"
-                            size={44}
-                            color="#546bfb"
-                        />
-                    </CloseView>
+                    <CloseButton />
                 </TouchableOpacity>
                 <Content>
                     {
@@ -90,11 +90,12 @@ const
     Container = styled.View`
         position: absolute;
         background-color: white;
-        width: 100%;
+        width: ${cardWidth};
         height: 100%;
         z-index: 100;
         border-radius: 20px;
         overflow: hidden;
+        align-self: center;
     `,
     Cover = styled.View`
         height: 142px;

@@ -1,30 +1,62 @@
 import React from 'react'
+import { Dimensions } from 'react-native'
 import styled from 'styled-components'
+import { width } from '../constants'
 
-export const Course = props => (
-    <Container>
-        <Cover>
-            <Image source={props.image} />
-            <LogoWrapper>
-                <Logo source={props.logo} resizeMode="contain" />
-            </LogoWrapper>
-            <Subtitle>{props.subtitle}</Subtitle>
-            <Title>{props.title}</Title>
-        </Cover>
-        <Content>
-            <Avatar source={props.avatar}/>
-            <Caption>{props.caption}</Caption>
-            <Author>{props.author}</Author>
-        </Content>
-    </Container>
-)
+
+const getCourseWidth = width => {
+    var cardWidth = width - 40
+    
+    if (cardWidth > 768 && cardWidth < 1024) {
+        cardWidth = ( width - 60) / 2
+    }
+    if (cardWidth >= 1024) {
+        cardWidth = ( width - 80 ) / 3
+    }
+    return cardWidth
+}
+
+export class Course extends React.Component {
+    state = {
+        cardWidth: getCourseWidth(width)
+    }
+    componentDidMount = () => {
+        Dimensions.addEventListener("change", this.adaptLayout)
+    }
+   
+    adaptLayout = dimensions => {
+        this.setState({
+            cardWidth: getCourseWidth(dimensions.window.width)
+        })
+    }
+    render() {
+        const { props } = this
+        return (
+            <Container style={{ width: this.state.cardWidth }}>
+                <Cover>
+                    <Image source={props.image} />
+                    <LogoWrapper>
+                        <Logo source={props.logo} resizeMode="contain" />
+                    </LogoWrapper>
+                    <Subtitle>{props.subtitle}</Subtitle>
+                    <Title>{props.title}</Title>
+                </Cover>
+                <Content>
+                    <Avatar source={props.avatar}/>
+                    <Caption>{props.caption}</Caption>
+                    <Author>{props.author}</Author>
+                </Content>
+            </Container>
+        )
+    }
+}
 
 const
     Container = styled.View`
         width: 335px;
         height: 335px;
         background-color: white;
-        margin: 10px 20px;
+        margin: 10px 10px;
         border-radius: 14px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     `,
